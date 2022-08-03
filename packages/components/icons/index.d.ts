@@ -1,0 +1,25 @@
+import AddLinkIcon from "./AddLinkIcon.vue";
+declare const _default: {
+    AddLinkIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    AlignCenterIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    AlignLeftIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    AlignRightIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    CodeIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    DeteleIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    DoneIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    FontSizeIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    FormatBoldIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    FormatClearIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    FormatItalicIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    HighlightIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    ImageIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    LinkIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    LinkOffIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    OrderListIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    QuoteIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    RedoIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    StrikethroughIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    UndoIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    UnorderListIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+};
+export default _default;

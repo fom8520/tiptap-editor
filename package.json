@@ -62,9 +62,11 @@
     },
     "rules": {}
   },
-  "types": "dist/index.d.ts",
+  "types": "packages/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "packages/types",
+    "packages/index.d.ts"
   ],
   "author": {
     "name": "form"
