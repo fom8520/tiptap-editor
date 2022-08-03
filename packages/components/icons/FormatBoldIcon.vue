@@ -15,11 +15,11 @@
   </svg>
 </template>
 
-<script>
-import Vue from 'vue'
+<script lang="ts">
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'FormatBoldIcon',
+  name: "FormatBoldIcon",
   props: {
     size: {
       type: Number,
@@ -27,9 +27,8 @@ export default Vue.extend({
     },
     color: {
       type: String,
-      default: '#000000'
-    }
-  }
-})
+      default: "#000000",
+    },
+  },
+});
 </script>
-
