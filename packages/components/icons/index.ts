@@ -19,6 +19,8 @@ import RedoIcon from "./RedoIcon.vue";
 import StrikethroughIcon from "./StrikethroughIcon.vue";
 import UndoIcon from "./UndoIcon.vue";
 import UnorderListIcon from "./UnorderListIcon.vue";
+import PreviewIcon from "./PreviewIcon.vue";
+import VisibilityOffIcon from "./VisibilityOffIcon.vue";
 
 export default {
   AddLinkIcon,
@@ -42,4 +44,6 @@ export default {
   StrikethroughIcon,
   UndoIcon,
   UnorderListIcon,
+  PreviewIcon,
+  VisibilityOffIcon,
 };

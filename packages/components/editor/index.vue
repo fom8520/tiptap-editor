@@ -1,11 +1,23 @@
 <template>
   <div class="editor-page" @drop="onDrop">
-    <EditorTabsBar
-      :actived="isActive"
-      :options="options"
-      @select="onSelected"
+    <template v-if="editable">
+      <div v-show="preview" class="preview-block">
+        <div class="btn" @click="() => onPreview(false)">
+          <VisibilityOffIcon :size="30" color="#757575" />
+        </div>
+      </div>
+      <EditorTabsBar
+        v-show="!preview"
+        :actived="isActive"
+        :options="options"
+        @select="onSelected"
+      />
+    </template>
+    <EditorContent
+      :editor="editor"
+      class="editor-content"
+      :class="{ preview }"
     />
-    <EditorContent :editor="editor" class="editor-content" />
   </div>
 </template>
 
@@ -23,10 +35,11 @@ import Images from "./image";
 import imageCompression from "browser-image-compression";
 import { EditorOptions } from "../../types/editor";
 import EditorTabsBar from "./tabs/Bar.vue";
+import VisibilityOffIcon from "../icons/VisibilityOffIcon.vue";
 
 export default Vue.extend({
   name: "TipTapEditor",
-  components: { EditorContent, EditorTabsBar },
+  components: { VisibilityOffIcon, EditorContent, EditorTabsBar },
   props: {
     value: {
       type: String,
@@ -55,6 +68,7 @@ export default Vue.extend({
   data() {
     return {
       editor: null as null | Editor,
+      preview: false,
     };
   },
   mounted() {
@@ -73,7 +87,7 @@ export default Vue.extend({
   },
   methods: {
     initEditor() {
-      const configs = [];
+      const configs: any[] = [];
 
       if (this.showImage) {
         configs.push(
@@ -82,7 +96,7 @@ export default Vue.extend({
             HTMLAttributes: {
               loading: "lazy",
             },
-            style: "overflow: hidden; resize: both;padding: 5px",
+            style: "overflow: hidden; resize: both; padding: 5px",
           })
         );
       }
@@ -179,11 +193,23 @@ export default Vue.extend({
           editor.chain().focus().clearContent().run();
           this.$emit("input", editor.getHTML());
           break;
+        case "preview":
+          this.onPreview(true);
+          break;
       }
     },
-    setImage(url: string) {
-      console.log(url);
-      this.editor?.chain().focus().setImage({ src: url }).run();
+    onPreview(flag: boolean) {
+      this.preview = flag;
+      this.editor?.setEditable(!flag);
+    },
+    setImage(src: string) {
+      this.editor
+        ?.chain()
+        .focus()
+        .setImage({
+          src,
+        })
+        .run();
     },
     onLink() {
       const editor = this.editor as Editor;
@@ -268,6 +294,28 @@ export default Vue.extend({
   width: 100%;
   height: auto;
 
+  .preview-block {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 5px;
+
+    .btn {
+      width: 50px;
+      height: 50px;
+      position: sticky;
+      top: 5px;
+      background-color: rgba(207, 207, 207, 0.361);
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99;
+    }
+  }
+
   .editor-content {
     width: 100%;
     height: 100%;
@@ -278,6 +326,22 @@ export default Vue.extend({
     border-radius: 4px;
     /* resize: both;
     overflow-y: auto; */
+
+    &.preview {
+      border: 0 !important;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow-y: auto;
+
+      :deep() .ProseMirror {
+        .editor-image {
+          overflow: inherit !important;
+          resize: none !important;
+          padding: 0 !important;
+        }
+      }
+    }
 
     :deep() .ProseMirror {
       width: 100%;
@@ -313,10 +377,34 @@ export default Vue.extend({
         }
 
         img {
+          min-width: 100px;
+          min-height: 100px;
           width: 100%;
           height: 100%;
           object-fit: inherit;
           border-radius: 4px;
+
+          &.image-error {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(242 242 242 / 15%);
+            padding: 30px;
+            box-sizing: border-box;
+          }
+          /*
+        &.image-success {
+        } */
+
+          &.image-loading {
+            background: linear-gradient(
+              90deg,
+              hsl(0deg 2% 72% / 49%) 25%,
+              hsl(0deg 4% 73% / 32%) 37%,
+              hsl(0deg 7% 81% / 29%) 63%
+            );
+            background-size: 400% 100%;
+            animation: el-skeleton-loading 1.4s ease infinite;
+          }
         }
       }
     }

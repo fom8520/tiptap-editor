@@ -116,7 +116,7 @@
 
     <div class="group">
       <div
-        v-for="(name, index) in ['undo', 'redo', 'clear', 'delete']"
+        v-for="(name, index) in ['undo', 'redo', 'clear', 'preview', 'delete']"
         :key="index"
         class="icon-button"
         @click.stop="() => onSelect(name)"
@@ -175,6 +175,7 @@ export default Vue.extend({
         redo: "RedoIcon",
         delete: "DeteleIcon",
         clear: "FormatClearIcon",
+        preview: "PreviewIcon",
       },
     };
   },
