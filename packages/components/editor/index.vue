@@ -31,7 +31,7 @@ import Link from "@tiptap/extension-link";
 import { TextAlign } from "@tiptap/extension-text-align";
 import CodeBlock from "@tiptap/extension-code-block";
 import Blockquote from "@tiptap/extension-blockquote";
-import Images from "./image";
+import Images from "./component/image";
 import imageCompression from "browser-image-compression";
 import { EditorOptions } from "../../types/editor";
 import EditorTabsBar from "./tabs/Bar.vue";

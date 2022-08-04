@@ -21,5 +21,7 @@ declare const _default: {
     StrikethroughIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
     UndoIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
     UnorderListIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    PreviewIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
+    VisibilityOffIcon: import("vue").VueConstructor<AddLinkIcon<Record<string, any>, Record<string, any>, never, never, (event: string, ...args: any[]) => AddLinkIcon<Record<string, any>, Record<string, any>, never, never, any>>>;
 };
 export default _default;
