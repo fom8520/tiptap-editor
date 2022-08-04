@@ -1,6 +1,6 @@
 <template>
-  <div class="editor-page" @drop="onDrop">
-    <template v-if="editable">
+  <div class="editor-page">
+    <div v-if="editable" class="editor-action-bar">
       <div v-show="preview" class="preview-block">
         <div class="btn" @click="() => onPreview(false)">
           <VisibilityOffIcon :size="30" color="#757575" />
@@ -12,12 +12,20 @@
         :options="options"
         @select="onSelected"
       />
-    </template>
-    <EditorContent
-      :editor="editor"
-      class="editor-content"
-      :class="{ preview }"
-    />
+      <ImageList
+        v-show="!preview"
+        ref="imageList"
+        @drop="($ev) => onDrop($ev, 'imageList')"
+        @dragover="onDragover"
+      />
+    </div>
+    <span @drop="onDrop" @dragover="onDragover">
+      <EditorContent
+        :editor="editor"
+        class="editor-content"
+        :class="{ preview }"
+      />
+    </span>
   </div>
 </template>
 
@@ -31,15 +39,17 @@ import Link from "@tiptap/extension-link";
 import { TextAlign } from "@tiptap/extension-text-align";
 import CodeBlock from "@tiptap/extension-code-block";
 import Blockquote from "@tiptap/extension-blockquote";
-import Images from "./component/image";
+import Images from "./tiptap-node/image";
 import imageCompression from "browser-image-compression";
-import { EditorOptions } from "../../types/editor";
+import { EditorOptions, ImageUploadChangeType } from "../../types/editor";
 import EditorTabsBar from "./tabs/Bar.vue";
 import VisibilityOffIcon from "../icons/VisibilityOffIcon.vue";
+import ImageList from "../ImageList.vue";
+import "../../assets/style/mian.scss";
 
 export default Vue.extend({
   name: "TipTapEditor",
-  components: { VisibilityOffIcon, EditorContent, EditorTabsBar },
+  components: { VisibilityOffIcon, EditorContent, EditorTabsBar, ImageList },
   props: {
     value: {
       type: String,
@@ -64,6 +74,10 @@ export default Vue.extend({
         };
       },
     } as PropOptions<EditorOptions | undefined>,
+    imageUploadChange: {
+      type: Function,
+      default: undefined,
+    } as PropOptions<ImageUploadChangeType>,
   },
   data() {
     return {
@@ -174,7 +188,7 @@ export default Vue.extend({
           editor.chain().focus().toggleBlockquote().run();
           break;
         case "image":
-          this.setImage(attributes.url);
+          this.imageChange(attributes.file);
           break;
         case "undo":
           editor.chain().focus().undo().run();
@@ -201,6 +215,25 @@ export default Vue.extend({
     onPreview(flag: boolean) {
       this.preview = flag;
       this.editor?.setEditable(!flag);
+    },
+    async imageChange(file: File) {
+      const path = URL.createObjectURL(file);
+      const image = {
+        path,
+        src: "",
+        loading: !!this.imageUploadChange,
+      };
+      (this.$refs.imageList as any)?.addImageUrl?.(image);
+
+      try {
+        const src = await this.imageUploadChange?.(file);
+
+        if (src) {
+          image.src = src;
+          (this.$refs.imageList as any)?.addImageUrl?.(image);
+        }
+        // eslint-disable-next-line no-empty
+      } catch {}
     },
     setImage(src: string) {
       this.editor
@@ -237,14 +270,24 @@ export default Vue.extend({
         .setLink({ href: url })
         .run();
     },
-    onDrop(e: DragEvent) {
+    onDragover(e: DragEvent) {
+      e.preventDefault();
+    },
+    onDrop(e: DragEvent, from: string) {
       e.preventDefault();
       const data = e.dataTransfer;
-      const files = data?.files;
+      const files = data?.files as FileList | undefined;
+
+      const imageSrc = e.dataTransfer?.getData("imageSrc");
+      if (imageSrc && from !== "imageList") {
+        (this.$refs.imageList as any)?.deleteImage?.(imageSrc);
+      }
 
       try {
         if (files && files?.length > 0) {
-          this.compresseImage(files);
+          for (let i = 0; i < files.length; i++) {
+            this.compresseImage(files.item(i) as File);
+          }
         }
       } catch (err) {
         if (err instanceof Error) {
@@ -252,8 +295,7 @@ export default Vue.extend({
         }
       }
     },
-    async compresseImage(files: FileList) {
-      const file = files.item(0) as File;
+    async compresseImage(file: File) {
       const isImage = (file as File)?.type?.split("/")[0] === "image";
       const isValidSize =
         (file as File)?.size / 1024 / 1024 <
@@ -268,8 +310,8 @@ export default Vue.extend({
       }
 
       if (!this.options?.image?.isCompression || file.type === "image/gif") {
-        const url = URL.createObjectURL(file);
-        this.onSelected("image", { url });
+        // const url = URL.createObjectURL(file);
+        this.onSelected("image", { file: file });
         return;
       }
 
@@ -282,8 +324,8 @@ export default Vue.extend({
       };
       const compressed: File = await imageCompression(file, options);
 
-      const url = URL.createObjectURL(compressed);
-      this.onSelected("image", { url });
+      // const url = URL.createObjectURL(compressed);
+      this.onSelected("image", { file: compressed });
     },
   },
 });
@@ -294,25 +336,31 @@ export default Vue.extend({
   width: 100%;
   height: auto;
 
-  .preview-block {
-    height: 100%;
-    position: absolute;
+  .editor-action-bar {
+    position: sticky;
     top: 0;
-    right: 5px;
+    backdrop-filter: blur(10px);
+    z-index: 99;
 
-    .btn {
-      width: 50px;
-      height: 50px;
-      position: sticky;
-      top: 5px;
-      background-color: rgba(207, 207, 207, 0.361);
-      border-radius: 8px;
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 99;
+    .preview-block {
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 5px;
+
+      .btn {
+        width: 50px;
+        height: 50px;
+        position: sticky;
+        top: 5px;
+        background-color: rgba(207, 207, 207, 0.361);
+        border-radius: 8px;
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
     }
   }
 
@@ -325,7 +373,7 @@ export default Vue.extend({
     border: 1px solid #ebebeb78;
     border-radius: 4px;
     /* resize: both;
-    overflow-y: auto; */
+      overflow-y: auto; */
 
     &.preview {
       border: 0 !important;
@@ -392,8 +440,8 @@ export default Vue.extend({
             box-sizing: border-box;
           }
           /*
-        &.image-success {
-        } */
+          &.image-success {
+          } */
 
           &.image-loading {
             background: linear-gradient(

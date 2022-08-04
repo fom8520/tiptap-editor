@@ -74,7 +74,7 @@ export const Image = Node.create<ImageOptions>({
   renderHTML({ HTMLAttributes }) {
     const onError = (e: ErrorEvent) => {
       const image = e.target ?? (e as any)?.path?.[0];
-      const errorUrl = require("../../assets/imageError.svg");
+      const errorUrl = require("../../../assets/imageError.svg");
       image.classList.add("image-error");
       image.src = errorUrl;
     };

@@ -19,3 +19,5 @@ export interface EditorPorps {
   showImage?: boolean; // true
   option?: EditorOptions;
 }
+
+export type ImageUploadChangeType = (file: File) => false | string;

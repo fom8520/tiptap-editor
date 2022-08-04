@@ -192,8 +192,7 @@ export default Vue.extend({
       return this.actived(name, attributes);
     },
     imageChange(file: File) {
-      const url = URL.createObjectURL(file);
-      this.onSelect("image", { url });
+      this.onSelect("image", { file });
     },
   },
 });
