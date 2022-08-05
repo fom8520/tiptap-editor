@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-tabs-bar scrollbar-bar">
+  <div class="editor-tabs-bar tiptap-scrollbar-bar">
     <div class="group">
       <div
         v-for="(name, index) in ['bold', 'italic', 'strike', 'highlight']"
@@ -116,7 +116,7 @@
 
     <div class="group">
       <div
-        v-for="(name, index) in ['undo', 'redo', 'clear', 'preview', 'delete']"
+        v-for="(name, index) in ['undo', 'redo', 'clear', 'delete']"
         :key="index"
         class="icon-button"
         @click.stop="() => onSelect(name)"

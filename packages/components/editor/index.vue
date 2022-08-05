@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-page">
+  <div class="tiptap-editor-page">
     <template v-if="editable">
       <div v-show="preview" class="preview-block">
         <div class="btn" @click="() => onPreview(false)">
@@ -7,7 +7,7 @@
         </div>
       </div>
     </template>
-    <div v-if="editable" class="editor-action-bar">
+    <div v-if="editable" class="editor-action-bar" :class="options.bar.class">
       <EditorTabsBar
         v-show="!preview"
         :actived="isActive"
@@ -26,8 +26,20 @@
       <EditorContent
         :editor="editor"
         class="editor-content"
-        :class="{ preview }"
+        :style="
+          editable
+            ? { height: `${height}px`, borderBottom: '1px solid #ebebeb78' }
+            : { height: 'auto' }
+        "
+        :class="{
+          preview,
+          [contentClass]: !!contentClass,
+          'tiptap-scrollbar-bar': editable,
+        }"
       />
+      <div v-if="editable && !preview" class="count">
+        {{ `${count}/${limitCount}` }}
+      </div>
     </span>
   </div>
 </template>
@@ -42,6 +54,7 @@ import Link from "@tiptap/extension-link";
 import { TextAlign } from "@tiptap/extension-text-align";
 import CodeBlock from "@tiptap/extension-code-block";
 import Blockquote from "@tiptap/extension-blockquote";
+import CharacterCount from "@tiptap/extension-character-count";
 import Images from "./tiptap-node/image";
 import imageCompression from "browser-image-compression";
 import { EditorOptions, ImageUploadChangeType } from "../../types/editor";
@@ -58,13 +71,25 @@ export default {
       type: String,
       default: "",
     },
+    height: {
+      type: Number,
+      default: 500,
+    },
     editable: {
       type: Boolean,
       default: true,
     },
-    showImage: {
+    onlyShowText: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+    limitCount: {
+      type: Number,
+      default: 99999,
+    },
+    contentClass: {
+      type: String,
+      default: undefined,
     },
     options: {
       type: Object,
@@ -73,6 +98,10 @@ export default {
           image: {
             memoryLimit: 10,
             isCompression: true,
+            resize: false,
+          },
+          bar: {
+            class: "",
           },
         };
       },
@@ -86,6 +115,7 @@ export default {
     return {
       editor: null as null | Editor,
       preview: false,
+      count: 0,
     };
   },
   mounted() {
@@ -109,14 +139,16 @@ export default {
     initEditor() {
       const configs: any[] = [];
 
-      if (this.showImage) {
+      if (!this.onlyShowText) {
         configs.push(
           Images.configure({
             inline: true,
             HTMLAttributes: {
               loading: "lazy",
             },
-            style: "overflow: hidden; resize: both; padding: 5px",
+            style: this.options?.image?.resize
+              ? "overflow: hidden; resize: both; padding: 5px"
+              : "",
           })
         );
       }
@@ -129,6 +161,9 @@ export default {
           StarterKit,
           Text,
           Highlight,
+          CharacterCount.configure({
+            limit: this.limitCount,
+          }),
           Link.configure({
             autolink: true,
             openOnClick: !this.editable,
@@ -137,7 +172,7 @@ export default {
           CodeBlock.configure({
             HTMLAttributes: {
               style: `background-color: #0D0D0D; color: #fff`,
-              class: "editor-code-block",
+              class: `editor-code-block ${this.onlyShowText && "code-hiddren"}`,
             },
           }),
           Blockquote.configure({
@@ -151,7 +186,14 @@ export default {
           ...configs,
         ],
         onUpdate: ({ editor }) => {
+          this.count = editor.storage.characterCount.characters();
           this.$emit("input", editor.getHTML());
+        },
+        onBlur: () => {
+          this.$emit("blur");
+        },
+        onFocus: () => {
+          this.$emit("focus");
         },
       });
     },
@@ -236,6 +278,7 @@ export default {
 
         if (src) {
           image.src = src;
+          image.loading = false;
           (this.$refs.imageList as any)?.addImageUrl?.(image);
         }
         // eslint-disable-next-line no-empty
@@ -280,13 +323,17 @@ export default {
       e.preventDefault();
     },
     onDrop(e: DragEvent, from: string) {
+      if (!this.editable) return;
       e.preventDefault();
+
       const data = e.dataTransfer;
       const files = data?.files as FileList | undefined;
 
       const imageSrc = e.dataTransfer?.getData("imageSrc");
       if (imageSrc && from !== "imageList") {
+        this.editor?.chain().setImage({ src: imageSrc }).run();
         (this.$refs.imageList as any)?.deleteImage?.(imageSrc);
+        return;
       }
 
       try {
@@ -337,132 +384,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.editor-page {
-  width: 100%;
-  height: auto;
-
-  .preview-block {
-    height: 100%;
-    position: fixed;
-    top: 0;
-    right: 5px;
-    z-index: 99;
-
-    .btn {
-      width: 50px;
-      height: 50px;
-      position: sticky;
-      top: 5px;
-      background-color: rgba(207, 207, 207, 0.361);
-      border-radius: 8px;
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-  }
-
-  .editor-action-bar {
-    position: sticky;
-    top: 0;
-    backdrop-filter: blur(10px);
-    z-index: 99;
-  }
-
-  .editor-content {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
-    border: 1px solid #ebebeb78;
-    border-radius: 4px;
-    /* resize: both;
-      overflow-y: auto; */
-
-    &.preview {
-      border: 0 !important;
-      position: fixed;
-      top: 0;
-      left: 0;
-      overflow-y: auto;
-
-      :deep() .ProseMirror {
-        .editor-image {
-          overflow: inherit !important;
-          resize: none !important;
-          padding: 0 !important;
-        }
-      }
-    }
-
-    :deep() .ProseMirror {
-      width: 100%;
-      height: 100%;
-      border: none;
-      outline: none;
-      min-height: 300px;
-
-      p {
-        margin: 0;
-      }
-
-      .editor-code-block {
-        font-family: JetBrainsMono, monospace;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        white-space: pre-line;
-      }
-
-      .editor-blockquote {
-        padding-left: 1rem;
-        border-left: 3px solid rgba(#0d0d0d, 0.1);
-      }
-
-      .editor-image {
-        border-radius: 4px;
-        max-width: 100%;
-        max-height: 100%;
-        box-sizing: border-box;
-        display: inline-block;
-        &::-webkit-scrollbar {
-          background-color: #cacaca;
-        }
-
-        img {
-          min-width: 100px;
-          min-height: 100px;
-          width: 100%;
-          height: 100%;
-          object-fit: inherit;
-          border-radius: 4px;
-
-          &.image-error {
-            width: 100%;
-            height: 100%;
-            background-color: rgb(242 242 242 / 15%);
-            padding: 30px;
-            box-sizing: border-box;
-          }
-          /*
-          &.image-success {
-          } */
-
-          &.image-loading {
-            background: linear-gradient(
-              90deg,
-              hsl(0deg 2% 72% / 49%) 25%,
-              hsl(0deg 4% 73% / 32%) 37%,
-              hsl(0deg 7% 81% / 29%) 63%
-            );
-            background-size: 400% 100%;
-            animation: el-skeleton-loading 1.4s ease infinite;
-          }
-        }
-      }
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

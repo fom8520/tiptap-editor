@@ -6,11 +6,10 @@ const install = function (Vue) {
     });
 };
 if (typeof window !== "undefined" && window.Vue) {
-    console.log('test');
     install(window.Vue);
 }
 export { TiptapEditor };
 export default {
-    install
+    install,
 };
 //# sourceMappingURL=index.js.map

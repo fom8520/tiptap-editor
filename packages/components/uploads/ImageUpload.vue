@@ -43,7 +43,6 @@ export default {
   methods: {
     async beforeAvatarUpload(file: ElUploadInternalRawFile) {
       const isImage = file.type.split("/")[0] === "image";
-      console.log(file);
       const isValidSize = file.size / 1024 / 1024 < this.memoryLimit;
       if (!isImage) {
         throw new Error("type error");

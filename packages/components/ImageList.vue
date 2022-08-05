@@ -2,7 +2,7 @@
   <div
     v-show="imageList.length > 0"
     v-on="$listeners"
-    class="image-card-list scrollbar-bar"
+    class="image-card-list tiptap-scrollbar-bar"
   >
     <ElImage
       v-for="(image, index) in imageList"
@@ -57,26 +57,11 @@ export default {
       }
     },
     onDrag(e: DragEvent, image: ImageType) {
+      e.dataTransfer?.clearData();
       e.dataTransfer?.setData("imageSrc", image.src || image.path);
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.image-card-list {
-  padding: 0 5px;
-  margin: 10px 0;
-  box-sizing: border-box;
-  border: 1px solid #cbcbca59;
-  border-radius: 4px;
-  white-space: nowrap;
-  .image {
-    width: 100px;
-    height: 100px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 5px;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
