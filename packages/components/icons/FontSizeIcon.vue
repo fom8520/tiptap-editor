@@ -14,9 +14,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-
-export default Vue.extend({
+export default {
   name: "FontSizeIcon",
   props: {
     size: {
@@ -28,5 +26,5 @@ export default Vue.extend({
       default: "#000000",
     },
   },
-});
+};
 </script>

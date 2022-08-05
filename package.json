@@ -1,8 +1,8 @@
 {
-  "name": "vue2-tiptap-editor-form",
-  "version": "1.0.0",
+  "name": "vue2-tiptap-editor-ab",
+  "version": "1.2.3",
   "private": false,
-  "main": "dist/vue2-tiptap-editor-form.umd.min.js",
+  "main": "dist/vue2-tiptap-editor-ab.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -66,7 +66,8 @@
   "files": [
     "dist",
     "packages/types",
-    "packages/index.d.ts"
+    "packages/index.d.ts",
+    "packages/assets"
   ],
   "author": {
     "name": "form"

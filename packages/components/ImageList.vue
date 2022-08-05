@@ -1,10 +1,10 @@
 <template>
   <div
     v-show="imageList.length > 0"
-    class="image-card-list scrollbar-bar"
     v-on="$listeners"
+    class="image-card-list scrollbar-bar"
   >
-    <el-image
+    <ElImage
       v-for="(image, index) in imageList"
       v-loading="image.loading"
       :key="index"
@@ -12,12 +12,13 @@
       :src="image.path"
       @dragstart="($ev) => onDrag($ev, image)"
     >
-    </el-image>
+    </ElImage>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { Image as ElImage } from "element-ui";
+import "element-ui/lib/theme-chalk/image.css";
 
 interface ImageType {
   src?: string;
@@ -25,8 +26,9 @@ interface ImageType {
   loading?: boolean;
 }
 
-export default Vue.extend({
+export default {
   name: "ImageList",
+  components: { ElImage },
   props: {},
   data() {
     return {
@@ -58,7 +60,7 @@ export default Vue.extend({
       e.dataTransfer?.setData("imageSrc", image.src || image.path);
     },
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>

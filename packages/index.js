@@ -1,15 +1,16 @@
 import TiptapEditor from "./components/editor/index.vue";
 const components = [TiptapEditor];
 const install = function (Vue) {
-  components.forEach((component) => {
-    Vue.component(component.name, component);
-  });
+    components.forEach((component) => {
+        Vue.component(component.name, component);
+    });
 };
 if (typeof window !== "undefined" && window.Vue) {
-  install(window.Vue);
+    console.log('test');
+    install(window.Vue);
 }
 export { TiptapEditor };
 export default {
-  install,
+    install
 };
 //# sourceMappingURL=index.js.map

@@ -1,5 +1,5 @@
 <template>
-  <el-upload
+  <Upload
     action=""
     class="image-uploader"
     accept="image/*"
@@ -10,18 +10,19 @@
     <slot>
       <image-icon :size="18" color="#757575" />
     </slot>
-  </el-upload>
+  </Upload>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import ImageIcon from "../../components/icons/ImageIcon.vue";
 import { ElUploadInternalRawFile } from "element-ui/types/upload";
 import imageCompression from "browser-image-compression";
+import { Upload } from "element-ui";
+import "element-ui/lib/theme-chalk/upload.css";
 
-export default Vue.extend({
+export default {
   name: "ImageUpload",
-  components: { ImageIcon },
+  components: { ImageIcon, Upload },
   props: {
     memoryLimit: {
       type: Number,
@@ -75,7 +76,7 @@ export default Vue.extend({
       throw new Error(" ");
     },
   },
-});
+};
 </script>
 
 <style lang="scss">

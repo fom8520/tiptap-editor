@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-tabs-bar">
+  <div class="editor-tabs-bar scrollbar-bar">
     <div class="group">
       <div
         v-for="(name, index) in ['bold', 'italic', 'strike', 'highlight']"
@@ -10,12 +10,12 @@
       >
         <component :is="components[name]" :size="size" :color="color" />
       </div>
-      <el-dropdown placement="bottom">
+      <Dropdown placement="bottom">
         <div class="icon-button">
           <FontSizeIcon :size="size" :color="color" />
         </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item style="padding: 0 5px" v-for="i in 6" :key="i">
+        <DropdownMenu slot="dropdown">
+          <DropdownItem style="padding: 0 5px" v-for="i in 6" :key="i">
             <div
               class="font-size-menu"
               @click="() => onSelect('heading', { level: i })"
@@ -28,9 +28,9 @@
               </span>
               <span> H {{ i }} </span>
             </div>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
     </div>
     <div class="divider" />
     <div class="group">
@@ -128,16 +128,24 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from "vue";
+import { PropOptions } from "vue";
 import { EditorOptions } from "../../../types/editor";
 import Icons from "../../icons/index";
 import ImageUpload from "../../../components/uploads/ImageUpload.vue";
+import { Dropdown, DropdownMenu, DropdownItem } from "element-ui";
+import "element-ui/lib/theme-chalk/dropdown.css";
+import "element-ui/lib/theme-chalk/dropdown-item.css";
+import "element-ui/lib/theme-chalk/dropdown-menu.css";
+import "../../../assets/style/mian.scss";
 
-export default Vue.extend({
+export default {
   name: "EditorTabsBar",
   components: {
     ...Icons,
     ImageUpload,
+    Dropdown,
+    DropdownMenu,
+    DropdownItem,
   },
   props: {
     size: {
@@ -195,56 +203,7 @@ export default Vue.extend({
       this.onSelect("image", { file });
     },
   },
-});
+};
 </script>
 
-<style lang="scss" scoped>
-.font-size-menu {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 8px;
-  box-sizing: border-box;
-
-  span {
-    display: inherit;
-    margin: 0 2px;
-  }
-}
-.editor-tabs-bar {
-  width: 100%;
-  height: 40px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  overflow-x: auto;
-  /* margin-bottom: 10px; */
-
-  .divider {
-    height: 60%;
-    width: 2px;
-    margin: 0 5px;
-    background-color: rgba(221, 219, 219, 0.82745);
-  }
-  .group {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    .icon-button {
-      margin: 0 5px;
-      display: flex;
-      align-items: center;
-      align-content: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.3s linear;
-
-      &:hover,
-      &.actived {
-        background-color: #b6b6b663;
-        border-radius: 4px;
-      }
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

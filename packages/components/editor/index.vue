@@ -1,23 +1,26 @@
 <template>
   <div class="editor-page">
-    <div v-if="editable" class="editor-action-bar">
+    <template v-if="editable">
       <div v-show="preview" class="preview-block">
         <div class="btn" @click="() => onPreview(false)">
           <VisibilityOffIcon :size="30" color="#757575" />
         </div>
       </div>
+    </template>
+    <div v-if="editable" class="editor-action-bar">
       <EditorTabsBar
         v-show="!preview"
         :actived="isActive"
         :options="options"
         @select="onSelected"
       />
-      <ImageList
-        v-show="!preview"
-        ref="imageList"
-        @drop="($ev) => onDrop($ev, 'imageList')"
-        @dragover="onDragover"
-      />
+      <span v-show="!preview">
+        <ImageList
+          ref="imageList"
+          @drop="($ev) => onDrop($ev, 'imageList')"
+          @dragover="onDragover"
+        />
+      </span>
     </div>
     <span @drop="onDrop" @dragover="onDragover">
       <EditorContent
@@ -30,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from "vue";
+import { PropOptions } from "vue";
 import { Editor, EditorContent } from "@tiptap/vue-2";
 import StarterKit from "@tiptap/starter-kit";
 import Text from "@tiptap/extension-text";
@@ -47,7 +50,7 @@ import VisibilityOffIcon from "../icons/VisibilityOffIcon.vue";
 import ImageList from "../ImageList.vue";
 import "../../assets/style/mian.scss";
 
-export default Vue.extend({
+export default {
   name: "TipTapEditor",
   components: { VisibilityOffIcon, EditorContent, EditorTabsBar, ImageList },
   props: {
@@ -98,6 +101,9 @@ export default Vue.extend({
 
       this.editor?.commands.setContent(value, false);
     },
+  },
+  destroyed() {
+    this.editor?.destroy();
   },
   methods: {
     initEditor() {
@@ -328,7 +334,7 @@ export default Vue.extend({
       this.onSelected("image", { file: compressed });
     },
   },
-});
+};
 </script>
 
 <style lang="scss" scoped>
@@ -336,32 +342,33 @@ export default Vue.extend({
   width: 100%;
   height: auto;
 
+  .preview-block {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 5px;
+    z-index: 99;
+
+    .btn {
+      width: 50px;
+      height: 50px;
+      position: sticky;
+      top: 5px;
+      background-color: rgba(207, 207, 207, 0.361);
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+
   .editor-action-bar {
     position: sticky;
     top: 0;
     backdrop-filter: blur(10px);
     z-index: 99;
-
-    .preview-block {
-      height: 100%;
-      position: absolute;
-      top: 0;
-      right: 5px;
-
-      .btn {
-        width: 50px;
-        height: 50px;
-        position: sticky;
-        top: 5px;
-        background-color: rgba(207, 207, 207, 0.361);
-        border-radius: 8px;
-        backdrop-filter: blur(5px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-    }
   }
 
   .editor-content {
