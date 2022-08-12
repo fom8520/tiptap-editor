@@ -22,25 +22,26 @@
         />
       </span>
     </div>
-    <span @drop="onDrop" @dragover="onDragover">
+    <div
+      class="tiptap-editor-container"
+      @drop="onDrop"
+      @dragover="onDragover"
+      @click="editorClick"
+    >
       <EditorContent
         :editor="editor"
         class="editor-content"
-        :style="
-          editable
-            ? { height: `${height}px`, borderBottom: '1px solid #ebebeb78' }
-            : { height: 'auto' }
-        "
+        :style="contentStyle"
         :class="{
           preview,
           [contentClass]: !!contentClass,
-          'tiptap-scrollbar-bar': editable,
+          'tiptap-scrollbar-bar': editable && isScroll,
         }"
       />
-      <div v-if="editable && !preview" class="count">
-        {{ `${count}/${limitCount}` }}
-      </div>
-    </span>
+    </div>
+    <div v-if="editable && !preview" class="count">
+      {{ `${count}/${limitCount}` }}
+    </div>
   </div>
 </template>
 
@@ -61,7 +62,7 @@ import { EditorOptions, ImageUploadChangeType } from "../../types/editor";
 import EditorTabsBar from "./tabs/Bar.vue";
 import VisibilityOffIcon from "../icons/VisibilityOffIcon.vue";
 import ImageList from "../ImageList.vue";
-import "../../assets/style/mian.scss";
+import "./../../assets/style/mian.scss";
 
 export default {
   name: "TipTapEditor",
@@ -71,11 +72,19 @@ export default {
       type: String,
       default: "",
     },
+    linkOnClick: {
+      type: Boolean,
+      default: true,
+    },
     height: {
       type: Number,
       default: 500,
     },
     editable: {
+      type: Boolean,
+      default: true,
+    },
+    isScroll: {
       type: Boolean,
       default: true,
     },
@@ -116,6 +125,7 @@ export default {
       editor: null as null | Editor,
       preview: false,
       count: 0,
+      formatTypeList: [] as string[],
     };
   },
   mounted() {
@@ -130,6 +140,28 @@ export default {
       }
 
       this.editor?.commands.setContent(value, false);
+    },
+  },
+  computed: {
+    contentStyle() {
+      let initStyle: { [key: string]: string } = { height: "100%" };
+
+      if (this.editable) {
+        initStyle = {
+          ...initStyle,
+          height: `${this.height}px`,
+        };
+
+        if (!this.isScroll) {
+          initStyle = {
+            ...initStyle,
+            height: "100%",
+            minHeight: `${this.height}px`,
+          };
+        }
+      }
+
+      return initStyle;
     },
   },
   destroyed() {
@@ -166,7 +198,7 @@ export default {
           }),
           Link.configure({
             autolink: true,
-            openOnClick: !this.editable,
+            openOnClick: !this.editable && this.linkOnClick,
             linkOnPaste: true,
           }),
           CodeBlock.configure({
@@ -197,7 +229,17 @@ export default {
         },
       });
     },
+    editorClick() {
+      const isFocus = this.editor?.isFocused;
+      if (!isFocus) {
+        this.editor?.commands.focus("end");
+      }
+    },
     isActive(name: string, attributes?: {} | undefined): boolean {
+      if (name === "brush") {
+        return this.formatTypeList.length > 0;
+      }
+
       return this.editor?.isActive?.(name, attributes) || false;
     },
     onSelected(type: string, attributes?: any | undefined) {
@@ -258,6 +300,31 @@ export default {
         case "preview":
           this.onPreview(true);
           break;
+        case "brush":
+          this.formatBrush();
+          break;
+      }
+    },
+    formatBrush() {
+      const typeList = ["bold", "italic", "strike", "highlight"];
+
+      if (this.formatTypeList.length > 0) {
+        for (const name of this.formatTypeList) {
+          if (!this.isActive(name)) {
+            this.onSelected(name);
+          }
+        }
+        this.formatTypeList = [];
+      } else {
+        const formatTypeList: string[] = [];
+
+        for (const name of typeList) {
+          if (this.isActive(name)) {
+            formatTypeList.push(name);
+          }
+        }
+
+        this.formatTypeList = formatTypeList;
       }
     },
     onPreview(flag: boolean) {

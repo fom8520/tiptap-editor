@@ -14,7 +14,9 @@ export interface EditorOptions {
 }
 export interface EditorPorps {
     value: string;
+    linkOnClick: boolean;
     height?: number;
+    isScroll?: boolean;
     editable?: boolean;
     onlyShowText?: boolean;
     contentClass?: string;

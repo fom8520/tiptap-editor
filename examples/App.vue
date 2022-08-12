@@ -1,6 +1,6 @@
 <template>
   <div class="index-page">
-    <Editor v-model="content" />
+    <Editor v-model="content" :isScroll="false" />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .index-page {
   max-width: 800px;
-  height: auto;
+  height: 100%;
   margin: 0 auto;
 }
 </style>

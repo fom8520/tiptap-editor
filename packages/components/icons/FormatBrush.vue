@@ -1,22 +1,22 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
     :width="size"
     :height="size"
     :fill="color"
+    viewBox="0 0 24 24"
   >
-    <title>Clear</title>
+    <title>Format Brush</title>
     <path
       xmlns="http://www.w3.org/2000/svg"
-      d="M7 21q-.825 0-1.412-.587Q5 19.825 5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413Q17.825 21 17 21ZM17 6H7v13h10ZM9 17h2V8H9Zm4 0h2V8h-2ZM7 6v13Z"
+      d="M11 22q-.825 0-1.412-.587Q9 20.825 9 20v-4H6q-.825 0-1.412-.588Q4 14.825 4 14V7q0-1.65 1.175-2.825Q6.35 3 8 3h12v11q0 .825-.587 1.412Q18.825 16 18 16h-3v4q0 .825-.587 1.413Q13.825 22 13 22ZM6 10h12V5h-1v4h-2V5h-1v2h-2V5H8q-.825 0-1.412.588Q6 6.175 6 7Zm0 4h12v-2H6v2Zm0-2v2Z"
     />
   </svg>
 </template>
 
 <script lang="ts">
 export default {
-  name: "DeteleIcon",
+  name: "FormatBrush",
   props: {
     size: {
       type: Number,

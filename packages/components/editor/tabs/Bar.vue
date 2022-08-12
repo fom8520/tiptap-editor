@@ -116,9 +116,10 @@
 
     <div class="group">
       <div
-        v-for="(name, index) in ['undo', 'redo', 'clear', 'delete']"
+        v-for="(name, index) in ['brush', 'clear', 'undo', 'redo', 'delete']"
         :key="index"
         class="icon-button"
+        :class="{ actived: isActive(name) }"
         @click.stop="() => onSelect(name)"
       >
         <component :is="components[name]" :size="size" :color="color" />
@@ -184,6 +185,7 @@ export default {
         delete: "DeteleIcon",
         clear: "FormatClearIcon",
         preview: "PreviewIcon",
+        brush: "FormatBrush",
       },
     };
   },

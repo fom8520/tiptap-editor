@@ -21,6 +21,7 @@ import UndoIcon from "./UndoIcon.vue";
 import UnorderListIcon from "./UnorderListIcon.vue";
 import PreviewIcon from "./PreviewIcon.vue";
 import VisibilityOffIcon from "./VisibilityOffIcon.vue";
+import FormatBrush from "./FormatBrush.vue";
 
 export default {
   AddLinkIcon,
@@ -46,4 +47,5 @@ export default {
   UnorderListIcon,
   PreviewIcon,
   VisibilityOffIcon,
+  FormatBrush,
 };
