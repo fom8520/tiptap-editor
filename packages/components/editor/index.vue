@@ -58,7 +58,11 @@ import Blockquote from "@tiptap/extension-blockquote";
 import CharacterCount from "@tiptap/extension-character-count";
 import Images from "./tiptap-node/image";
 import imageCompression from "browser-image-compression";
-import { EditorOptions, ImageUploadChangeType } from "../../types/editor";
+import {
+  EditorOptions,
+  ImageUploadChangeType,
+  FormatType,
+} from "../../types/editor";
 import EditorTabsBar from "./tabs/Bar.vue";
 import VisibilityOffIcon from "../icons/VisibilityOffIcon.vue";
 import ImageList from "../ImageList.vue";
@@ -125,7 +129,7 @@ export default {
       editor: null as null | Editor,
       preview: false,
       count: 0,
-      formatTypeList: [] as string[],
+      formatTypeList: [] as FormatType[],
     };
   },
   mounted() {
@@ -306,21 +310,31 @@ export default {
       }
     },
     formatBrush() {
-      const typeList = ["bold", "italic", "strike", "highlight"];
+      const typeList = ["bold", "italic", "strike", "highlight", "heading"];
 
       if (this.formatTypeList.length > 0) {
-        for (const name of this.formatTypeList) {
-          if (!this.isActive(name)) {
-            this.onSelected(name);
+        for (const item of this.formatTypeList) {
+          if (!this.isActive(item.name, item.attributes)) {
+            this.onSelected(item.name, item.attributes);
           }
         }
         this.formatTypeList = [];
       } else {
-        const formatTypeList: string[] = [];
+        const formatTypeList: FormatType[] = [];
 
         for (const name of typeList) {
+          if (name === "heading") {
+            for (let i = 1; i < 7; i++) {
+              if (this.isActive(name, { level: i })) {
+                formatTypeList.push({ name, attributes: { level: i } });
+                break;
+              }
+            }
+            continue;
+          }
+
           if (this.isActive(name)) {
-            formatTypeList.push(name);
+            formatTypeList.push({ name });
           }
         }
 

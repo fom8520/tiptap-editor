@@ -3,6 +3,10 @@ export interface ImageProps {
     isCompression?: boolean;
     resize?: boolean;
 }
+export interface FormatType {
+    name: string;
+    attributes?: any;
+}
 export interface BarProps {
     size?: number;
     color?: string;

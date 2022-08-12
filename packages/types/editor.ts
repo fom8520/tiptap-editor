@@ -4,6 +4,11 @@ export interface ImageProps {
   resize?: boolean; // false
 }
 
+export interface FormatType {
+  name: string;
+  attributes?: any;
+}
+
 export interface BarProps {
   size?: number; // 22
   color?: string; // #757575
