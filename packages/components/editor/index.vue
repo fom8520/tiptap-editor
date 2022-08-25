@@ -178,7 +178,7 @@ export default {
       if (!this.onlyShowText) {
         configs.push(
           Images.configure({
-            inline: true,
+            inline: false,
             HTMLAttributes: {
               loading: "lazy",
             },
@@ -235,7 +235,7 @@ export default {
     },
     editorClick() {
       const isFocus = this.editor?.isFocused;
-      if (!isFocus) {
+      if (!isFocus && this.editable) {
         this.editor?.commands.focus("end");
       }
     },

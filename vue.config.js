@@ -8,11 +8,10 @@ module.exports = {
       filename: "index.html",
     },
   },
-
   chainWebpack: (config) => {
     config.module
       .rule("js")
-      .include.add(path.resolve(__dirname, "packages"))
+      .include.add(path.resolve(__dirname, "./dist"))
       .end()
       .use("babel")
       .loader("babel-loader")

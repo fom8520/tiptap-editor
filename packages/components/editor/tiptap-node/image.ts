@@ -73,10 +73,12 @@ export const Image = Node.create<ImageOptions>({
 
   renderHTML({ HTMLAttributes }) {
     const onError = (e: ErrorEvent) => {
-      const image = e.target ?? (e as any)?.path?.[0];
-      const errorUrl = require("../../../assets/imageError.svg");
+      const image: HTMLImageElement = e.target ?? (e as any)?.path?.[0];
+      // const errorUrl = require("../../../assets/imageError.svg");
+
+      image.classList.remove("image-loading");
       image.classList.add("image-error");
-      image.src = errorUrl;
+      // image.src = errorUrl;
     };
     const onImageLoading = (e: any) => {
       const image = e.target ?? (e as any)?.path?.[0];
