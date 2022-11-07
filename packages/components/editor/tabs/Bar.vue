@@ -1,7 +1,7 @@
 <template>
   <div class="editor-tabs-bar tiptap-scrollbar-bar">
     <div class="group">
-      <div
+      <button
         v-for="(name, index) in ['bold', 'italic', 'strike', 'highlight']"
         :key="index"
         class="icon-button"
@@ -9,11 +9,11 @@
         @click.stop="() => onSelect(name)"
       >
         <component :is="components[name]" :size="size" :color="color" />
-      </div>
+      </button>
       <Dropdown placement="bottom">
-        <div class="icon-button">
+        <button class="icon-button">
           <FontSizeIcon :size="size" :color="color" />
-        </div>
+        </button>
         <DropdownMenu slot="dropdown">
           <DropdownItem style="padding: 0 5px" v-for="i in 6" :key="i">
             <div
@@ -34,88 +34,88 @@
     </div>
     <div class="divider" />
     <div class="group">
-      <div
+      <button
         class="icon-button"
         :class="{ actived: isActive('bulletList') }"
         @click.stop="() => onSelect('bulletList')"
       >
         <UnorderListIcon :size="size" :color="color" />
-      </div>
-      <div
+      </button>
+      <button
         class="icon-button"
         :class="{ actived: isActive('orderedList') }"
         @click.stop="() => onSelect('orderedList')"
       >
         <OrderListIcon :size="size" :color="color" />
-      </div>
-      <div
+      </button>
+      <button
         v-for="(name, index) in ['left', 'center', 'right']"
         :key="index"
         class="icon-button"
         @click.stop="() => onSelect(name)"
       >
         <component :is="components[name]" :size="size" :color="color" />
-      </div>
+      </button>
     </div>
     <div class="divider" />
 
     <div class="group">
-      <div
+      <button
         class="icon-button"
         :class="{ actived: isActive('codeBlock') }"
         @click.stop="() => onSelect('codeBlock')"
       >
         <CodeIcon :size="size" :color="color" />
-      </div>
+      </button>
 
-      <div
+      <button
         class="icon-button"
         :class="{ actived: isActive('blockquote') }"
         @click.stop="() => onSelect('blockquote')"
       >
         <QuoteIcon :size="size" :color="color" />
-      </div>
+      </button>
 
-      <div
+      <button
         v-show="!isActive('link')"
         class="icon-button"
         :class="{ actived: isActive('link') }"
         @click.stop="() => onSelect('link')"
       >
         <AddLinkIcon :size="size" :color="color" />
-      </div>
+      </button>
 
-      <div
+      <button
         v-show="isActive('link')"
         class="icon-button"
         :class="{ actived: isActive('link') }"
         @click.stop="() => onSelect('link')"
       >
         <LinkIcon :size="size" :color="color" />
-      </div>
+      </button>
 
-      <div
+      <button
         v-show="isActive('link')"
         class="icon-button"
         @click.stop="() => onSelect('linkoff')"
       >
         <LinkOffIcon :size="size" :color="color" />
-      </div>
+      </button>
     </div>
 
     <div class="divider" />
 
     <div class="group">
-      <div class="icon-button">
+      <button class="icon-button">
         <ImageUpload @change="imageChange">
           <ImageIcon :size="size" :color="color" v-bind="imageProps" />
         </ImageUpload>
-      </div>
+      </button>
     </div>
     <div class="divider" />
 
     <div class="group">
-      <div
+      <button
         v-for="(name, index) in ['brush', 'clear', 'undo', 'redo', 'delete']"
         :key="index"
         class="icon-button"
@@ -123,7 +123,7 @@
         @click.stop="() => onSelect(name)"
       >
         <component :is="components[name]" :size="size" :color="color" />
-      </div>
+      </button>
     </div>
   </div>
 </template>

@@ -13,6 +13,8 @@
       @dragstart="($ev) => onDrag($ev, image)"
     >
     </ElImage>
+
+    <div class="image-tip">{{ tip }}</div>
   </div>
 </template>
 
@@ -29,7 +31,12 @@ interface ImageType {
 export default {
   name: "ImageList",
   components: { ElImage },
-  props: {},
+  props: {
+    tip: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       imageList: [] as ImageType[],

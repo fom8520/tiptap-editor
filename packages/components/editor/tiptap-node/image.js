@@ -44,9 +44,10 @@ export const Image = Node.create({
         const onError = (e) => {
             var _a, _b, _c;
             const image = (_a = e.target) !== null && _a !== void 0 ? _a : (_c = (_b = e) === null || _b === void 0 ? void 0 : _b.path) === null || _c === void 0 ? void 0 : _c[0];
-            const errorUrl = require("../../../assets/imageError.svg");
+            // const errorUrl = require("../../../assets/imageError.svg");
+            image.classList.remove("image-loading");
             image.classList.add("image-error");
-            image.src = errorUrl;
+            // image.src = errorUrl;
         };
         const onImageLoading = (e) => {
             var _a, _b, _c, _d, _e, _f;

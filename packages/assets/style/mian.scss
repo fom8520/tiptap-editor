@@ -41,19 +41,27 @@
 }
 
 .editor-tabs-bar .group .icon-button {
-  margin: 0 5px;
   display: flex;
   align-items: center;
   align-content: center;
   justify-content: center;
   cursor: pointer;
   transition: 0.3s linear;
+  border: 0;
+  background: none;
+  outline: none;
+  padding: 5px;
+  margin: 0 2px;
 
-  &:hover,
-  &.actived {
-    background-color: #b6b6b663;
-    border-radius: 4px;
-  }
+  // &:hover {
+  //   background-color: #b6b6b663;
+  //   border-radius: 4px;
+  // }
+}
+
+.editor-tabs-bar .group .actived {
+  background-color: #b6b6b663;
+  border-radius: 4px;
 }
 
 .editor-tabs-bar {
@@ -76,7 +84,7 @@
   padding: 0 5px;
   margin: 10px 0;
   box-sizing: border-box;
-  border: 1px solid #cbcbca59;
+  border-top: 1px solid #cbcbca59;
   border-radius: 4px;
   white-space: nowrap;
 }
@@ -87,6 +95,12 @@
   border-radius: 4px;
   cursor: pointer;
   margin: 5px;
+}
+
+.tiptap-editor-page .image-card-list .image-tip {
+  font-size: 12px;
+  font-weight: 400;
+  color: #b1adad;
 }
 
 .tiptap-editor-page .preview-block {

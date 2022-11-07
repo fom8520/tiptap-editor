@@ -9,11 +9,9 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Editor from "../packages/components/editor/index.vue";
 
 export default Vue.extend({
   name: "IndexPage",
-  components: { Editor },
   data() {
     return {
       content:

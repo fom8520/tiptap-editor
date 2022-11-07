@@ -7,7 +7,13 @@
         </div>
       </div>
     </template>
-    <div v-if="editable" class="editor-action-bar" :class="options.bar.class">
+    <div
+      v-if="editable"
+      class="editor-action-bar"
+      :class="options.bar.class"
+      @click.stop
+      @blur.stop
+    >
       <EditorTabsBar
         v-show="!preview"
         :actived="isActive"
@@ -17,6 +23,7 @@
       <span v-show="!preview">
         <ImageList
           ref="imageList"
+          :tip="options.image.tip"
           @drop="($ev) => onDrop($ev, 'imageList')"
           @dragover="onDragover"
         />
@@ -69,7 +76,7 @@ import ImageList from "../ImageList.vue";
 import "./../../assets/style/mian.scss";
 
 export default {
-  name: "TipTapEditor",
+  name: "Editor",
   components: { VisibilityOffIcon, EditorContent, EditorTabsBar, ImageList },
   props: {
     value: {
@@ -112,6 +119,7 @@ export default {
             memoryLimit: 10,
             isCompression: true,
             resize: false,
+            tip: "Please drag the image to your post after it has been uploaded",
           },
           bar: {
             class: "",
@@ -235,6 +243,7 @@ export default {
     },
     editorClick() {
       const isFocus = this.editor?.isFocused;
+
       if (!isFocus && this.editable) {
         this.editor?.commands.focus("end");
       }

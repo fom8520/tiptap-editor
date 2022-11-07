@@ -2,6 +2,7 @@ export interface ImageProps {
     memoryLimit?: number;
     isCompression?: boolean;
     resize?: boolean;
+    tip?: string;
 }
 export interface FormatType {
     name: string;

@@ -1,6 +1,6 @@
 {
   "name": "vue2-tiptap-editor-ab",
-  "version": "1.4.2",
+  "version": "1.4.6",
   "private": false,
   "main": "dist/vue2-tiptap-editor-ab.umd.min.js",
   "scripts": {
